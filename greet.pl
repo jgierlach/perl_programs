@@ -8,4 +8,4 @@ use diagnostics;
 print "What is your name? ";
 $name = <STDIN>;
 print "Hi " . $name . ", nice to meet you";
-print "Have a nice day.";1
+print "Have a nice day.";
