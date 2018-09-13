@@ -11,27 +11,31 @@ chomp ($foods[0] = <STDIN>);
 chomp ($foods[1] = <STDIN>);
 chomp ($foods[2] = <STDIN>);
 
-#  Insert the word "and" into the list of foods, so the user doesn't have 
-#  to type it
-($foods[2], $foods[3]) = ("and", $foods[2]);
+print "Type 'true' if you want there to be an oxford comma and 'false' if you don't want there to be an oxford comma.\n";
+chomp($include_oxford_comma = <STDIN>);
 
+# 1. splice the array for the last index
+# 2. take that and add an and
+# 3. join the other array with commas
+# 4. concatenate the two at the end in your final print statement
+$arraySize = @foods;
 
-#  Assume that we won't include the Oxford comma
-$include_oxford_comma = 1;
+@lastFood = splice @foods, -1;
+@withoutLastFood = @foods;
 
-#  If there is 1 command line argument, check to see if it's the word true
-if ($ARGV == 1) {
-	$include_oxford_comma = ($ARGV[1] == "true");
-}
+print "This is the lastFood array \n", @lastFood;
+print "\n";
+print "This is the withoutLastFood array \n", @withoutLastFood;
 
 #  Using the oxford comma means that we should have a comma after each word in the list
-if ($include_oxford_comma) {
-	print "we're inside of the include oxford comma conditional \n";
-	$foods = join (", ", @foods[0..2]);
+if ($include_oxford_comma eq "true") {
+	print "We're inside of the include oxford comma conditional \n";
+	# $foods = join (", ", @foods[0..2]);
 }
 else {
-	$foods = join (", ", ($foods[0], $foods[1]));
-	$foods .= " $foods[3]";
+	print "We're inside of the else block \n";
+	# $foods = join (", ", ($foods[0], $foods[1]));
+	# $foods .= " $foods[3]";
 }
 
-print "You are $first_name $last_name, and you like to eat $foods!\n";
+# print "You are $first_name $last_name, and you like to eat $foods!\n";
