@@ -11,27 +11,22 @@ chomp ($foods[0] = <STDIN>);
 chomp ($foods[1] = <STDIN>);
 chomp ($foods[2] = <STDIN>);
 
-#  Insert the word "and" into the list of foods, so the user doesn't have 
-#  to type it
-($foods[2], $foods[3]) = ("and", $foods[2]);
+print "Type 'true' if you want there to be an oxford comma and 'false' if you don't want there to be an oxford comma.\n";
+chomp($include_oxford_comma = <STDIN>);
 
-
-#  Assume that we won't include the Oxford comma
-$include_oxford_comma = 0;
-
-#  If there is 1 command line argument, check to see if it's the word true
-if ($ARGV == 1) {
-	$include_oxford_comma = ($ARGV[1] == "true");
-}
+@lastFood = splice @foods, -1;
+@withoutLastFood = @foods;
 
 #  Using the oxford comma means that we should have a comma after each word in the list
-if ($include_oxford_comma) {
-	$foods = join (", ", @foods);
+if ($include_oxford_comma eq "true") {
+	$withoutLastFood = join (", ", @withoutLastFood);
+	unshift @lastFood, 'and';
+	$lastFood = join(" ", @lastFood);
+	print "You are $first_name $last_name, and you like to eat " . $withoutLastFood . "," . " " . $lastFood . "!"; 
 }
 else {
-	$foods = join (", ", ($foods[0], $foods[1]));
-	$foods .= " $foods[3]";
+	$withoutLastFood = join (", ", @withoutLastFood);
+	unshift @lastFood, 'and';
+	$lastFood = join(" ", @lastFood);
+	print "You are $first_name $last_name, and you like to eat " . $withoutLastFood . " " . $lastFood . "!";
 }
-
-
-print "You are $first_name $last_name, and you like to eat $foods!\n";

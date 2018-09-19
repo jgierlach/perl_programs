@@ -1,4 +1,8 @@
 #!/usr/bin/perl
+# use strict;
+use utf8;
+use warnings;
+# use diagnostics;
 
 print "What is your first name? ";
 chomp ($first_name = <STDIN>);
@@ -6,36 +10,43 @@ chomp ($first_name = <STDIN>);
 print "What is your last name? ";
 chomp ($last_name = <STDIN>);
 
-print "Please enter your three favorite foods, one per line\n";
-chomp ($foods[0] = <STDIN>);
-chomp ($foods[1] = <STDIN>);
-chomp ($foods[2] = <STDIN>);
+print "Please enter your favorite foods, one per line. \n If at any point you want to enable the oxford comma setting type 'true'. \n Otherwise by default it will be set to 'false'. \n After you have finished listing items type break in order to allow the program to run and process your requests. \n";
 
-print "Type 'true' if you want there to be an oxford comma and 'false' if you don't want there to be an oxford comma.\n";
-chomp($include_oxford_comma = <STDIN>);
+# Get our user input and create the foods array
+while() {
+	chomp($input = <STDIN>);
+	if($input eq "break") {
+	  	last;
+	}
+	push @foods, $input;
+}
 
-# 1. splice the array for the last index
-# 2. take that and add an and
-# 3. join the other array with commas
-# 4. concatenate the two at the end in your final print statement
-$arraySize = @foods;
+# By default the oxford comma will be set to false
+# If user enters true find it and change variable to true
+$include_oxford_comma = "false";
+foreach $userInput (@foods) {
+  if($userInput eq "true") {
+    $include_oxford_comma = "true";
+  }
+}
 
-@lastFood = splice @foods, -1;
-@withoutLastFood = @foods;
+# Find the last food item entered and save it to a variable
+# If item is the string true or false look one more index back
+if($foods[-1] ne "true" && $foods[-1] ne "false") {
+  $lastFood = 'and ' . $foods[-1];
+  splice @foods, -1;
+} else {
+  $lastFood = 'and ' . $foods[-2];
+  splice @foods, -2;
+}
 
-print "This is the lastFood array \n", @lastFood;
-print "\n";
-print "This is the withoutLastFood array \n", @withoutLastFood;
-
-#  Using the oxford comma means that we should have a comma after each word in the list
+# Whether variable is true false run the oxford comma or not
 if ($include_oxford_comma eq "true") {
-	print "We're inside of the include oxford comma conditional \n";
-	# $foods = join (", ", @foods[0..2]);
+	$withoutLastFood = join (", ", @foods);
+	print "You are $first_name $last_name, and you like to eat " . $withoutLastFood . "," . " " . $lastFood . "!"; 
 }
 else {
-	print "We're inside of the else block \n";
-	# $foods = join (", ", ($foods[0], $foods[1]));
-	# $foods .= " $foods[3]";
+	$withoutLastFood = join (", ", @foods);
+	print "You are $first_name $last_name, and you like to eat " . $withoutLastFood . " " . $lastFood . "!";
 }
 
-# print "You are $first_name $last_name, and you like to eat $foods!\n";
